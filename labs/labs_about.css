@@ -1,0 +1,200 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+
+header {
+  background: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+nav a.active,
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 2rem;
+}
+
+.lab-links {
+  margin-top: 1rem;
+  list-style: none;
+}
+
+.lab-links li {
+  margin: 0.5rem 0;
+}
+
+.lab-links a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.lab-links a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+footer .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+footer .social-icons img {
+  width: 30px;   /* adjust size */
+  height: 30px;
+  transition: transform 0.2s ease;
+}
+
+footer .social-icons img:hover {
+  transform: scale(1.2);
+}
+
+/* Lab Intro Grid */
+.lab-intro {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.lab-intro h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.lab-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lab-card h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.lab-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.lab-card a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.lab-card a:hover {
+  background: #4956c7;
+}
+
+.lab-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Lab Detail Pages */
+.lab-details {
+  margin: 2rem 0;
+}
+
+.lab-details h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.lab-details p {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  color: #555;
+}
+
+/* Resource Grid */
+.lab-resources {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.resource-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.resource-card h3 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.resource-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.resource-card a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.resource-card a:hover {
+  background: #4956c7;
+}
+
+.resource-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
