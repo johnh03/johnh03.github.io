@@ -2,6 +2,9 @@ body {
   font-family: Arial, sans-serif;
   background: #fafafa;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header {
@@ -28,6 +31,7 @@ nav a:hover {
 
 main {
   padding: 2rem;
+  flex: 1;
 }
 
 .lab-links {
