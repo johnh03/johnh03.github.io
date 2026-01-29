@@ -1,3 +1,0 @@
-In this lab we were tasked with creating a Information Architechture outline for our repo. Using this outline, we started building our personal website with multiple pages, mainly focusing on the landing page and labs/projects page.
-
-This was a fun lab since I already had a personal website but it was using javascript for a couple test features but it wasn't as structured. It was a personal project to test features that I had never experimented with and I was just trying to see what works and what doesn't.
