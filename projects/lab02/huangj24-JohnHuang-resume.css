@@ -6,17 +6,17 @@
   --glass: rgba(11,108,243,0.08);
   --radius:8px;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  font-size: 13px; /* smaller base */
+  font-size: 12px; /* smaller base */
 }
 
 *{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:#000; -webkit-font-smoothing:antialiased;}
 
-.container{max-width:900px; margin:16px auto; padding:12px;}
+.container{max-width:900px; margin:10px auto; padding:8px;}
 
 .resume{
   display:grid;
-  grid-template-columns:260px 1fr;
+  grid-template-columns:200px 1fr;
   gap:16px;
   align-items:start;
 }
@@ -25,15 +25,14 @@ body{margin:0; background:var(--bg); color:#000; -webkit-font-smoothing:antialia
 .panel{
   background:var(--card);
   border-radius:var(--radius);
-  padding:14px;
+  padding:10px;
   box-shadow:0 3px 10px rgba(15,23,42,0.05);
 }
 
-.header{display:flex; gap:10px; align-items:center;}
-.portrait{height:60px; width:60px; border-radius:12px; background:var(--glass);
-  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px; color:var(--accent);}
-.name{font-size:16px; font-weight:700;}
-.headline{color:var(--muted); font-size:12px;}
+.header{display:flex; flex-direction:column; gap:12px; align-items:center;}
+.portrait{height:120px; width:120px; border-radius:12px; object-fit:cover; display:block;}
+.name{font-size:16px; font-weight:700; text-align:center;}
+.headline{color:var(--muted); font-size:11px; text-align:center;}
 
 .contact{display:flex; flex-direction:column; gap:3px; font-size:12px;}
 .contact a{color:inherit; text-decoration:none}
@@ -52,7 +51,7 @@ hr.soft{border:0; height:1px; background:#000; margin:8px 0;}
 .skill-pill{background:transparent; padding:3px 7px; border-radius:999px; font-size:12px; color:#0b3b8a;}
 
 /* right column */
-.main-card{background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:0 3px 10px rgba(15,23,42,0.05);}
+.main-card{background:var(--card); border-radius:var(--radius); padding:10px; box-shadow:0 3px 10px rgba(15,23,42,0.05);}
 
 .summary{color:var(--muted); font-size:12px; margin-bottom:10px;}
 
