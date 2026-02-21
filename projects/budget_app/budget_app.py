@@ -4,8 +4,11 @@ import json
 import os
 from datetime import datetime
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 
-DATA_FILE = "budget_data.json"
+# Get the directory of the current script and build the path to budget_data.json
+DATA_FILE = os.path.join(os.path.dirname(__file__), "budget_data.json")
 
 CATEGORIES = [
     "Rent", "Utilities", "Groceries",
@@ -54,8 +57,8 @@ class BudgetApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Budget Tracker")
-        self.root.geometry("750x700")
-        self.root.resizable(False, False)
+        self.root.geometry("1200x800")
+        self.root.resizable(True, True)
         
         # Set dark theme
         self.root.configure(bg=COLORS["bg_primary"])
@@ -63,8 +66,11 @@ class BudgetApp:
         self.data = load_data()
         self.current_month = tk.StringVar()
         self.months = self.generate_months()
-        self.current_month.set(self.months[0])
+        # Auto-select current month
+        current_month_str = datetime.now().strftime("%B %Y")
+        self.current_month.set(current_month_str if current_month_str in self.months else self.months[0])
 
+        self.chart_canvas = None
         self.setup_styles()
         self.create_widgets()
         self.update_summary()
@@ -94,12 +100,13 @@ class BudgetApp:
         # Configure colors for different elements
         style.configure('TButton', font=('Segoe UI', 10, 'bold'), foreground=COLORS["text_primary"])
         style.configure('TLabel', background=COLORS["bg_primary"], foreground=COLORS["text_primary"], font=('Segoe UI', 10))
-        style.configure('Title.TLabel', background=COLORS["bg_primary"], foreground=COLORS["accent_light"], font=('Segoe UI', 20, 'bold'))
-        style.configure('Subtitle.TLabel', background=COLORS["bg_secondary"], foreground=COLORS["text_secondary"], font=('Segoe UI', 9))
+        style.configure('Title.TLabel', background=COLORS["bg_primary"], foreground=COLORS["accent_light"], font=('Segoe UI', 22, 'bold'))
+        style.configure('Subtitle.TLabel', background=COLORS["bg_secondary"], foreground=COLORS["text_secondary"], font=('Segoe UI', 10, 'bold'))
         style.configure('TCombobox', font=('Segoe UI', 10))
         
         # Style the Combobox
-        style.configure('TCombobox', fieldbackground=COLORS["bg_secondary"], background=COLORS["bg_secondary"], foreground=COLORS["text_primary"])
+        style.configure('TCombobox', fieldbackground=COLORS["accent"], background=COLORS["bg_secondary"], foreground="#000000")
+        style.map('TCombobox', fieldbackground=[('readonly', COLORS["accent"])])
 
     # --------------------------
     # UI
@@ -108,11 +115,11 @@ class BudgetApp:
     def create_widgets(self):
         # Main container with padding
         main_frame = tk.Frame(self.root, bg=COLORS["bg_primary"])
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
 
         # Header
         header_frame = tk.Frame(main_frame, bg=COLORS["bg_primary"])
-        header_frame.pack(fill=tk.X, pady=(0, 30))
+        header_frame.pack(fill=tk.X, pady=(0, 20))
         
         title_label = ttk.Label(header_frame, text="💰 Budget Tracker", style='Title.TLabel')
         title_label.pack(side=tk.LEFT)
@@ -121,7 +128,7 @@ class BudgetApp:
         month_frame = tk.Frame(main_frame, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["border"])
         month_frame.pack(fill=tk.X, pady=(0, 20), padx=0)
         month_frame.pack_propagate(False)
-        month_frame.configure(height=60)
+        month_frame.configure(height=50)
 
         month_label = ttk.Label(month_frame, text="Select Month:", style='Subtitle.TLabel')
         month_label.pack(side=tk.LEFT, padx=15, pady=10)
@@ -139,73 +146,49 @@ class BudgetApp:
 
         # Summary Cards Frame
         summary_container = tk.Frame(main_frame, bg=COLORS["bg_primary"])
-        summary_container.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
+        summary_container.pack(fill=tk.BOTH, expand=False, pady=(0, 15))
 
-        # Income Card
-        income_card = tk.Frame(summary_container, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["success"])
-        income_card.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
+        for card_info in [
+            ("Income", "income", COLORS["success"]),
+            ("Expenses", "expenses", COLORS["danger"]),
+            ("Budget", "budget", COLORS["warning"]),
+            ("Remaining", "balance", COLORS["accent"])
+        ]:
+            card = tk.Frame(summary_container, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=card_info[2])
+            card.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=4)
 
-        ttk.Label(income_card, text="Income", style='Subtitle.TLabel').pack(pady=(15, 5), padx=15)
-        self.income_label = tk.Label(
-            income_card, 
-            text="$0.00", 
-            font=('Segoe UI', 24, 'bold'),
-            fg=COLORS["success"],
-            bg=COLORS["bg_secondary"]
-        )
-        self.income_label.pack(pady=(0, 15), padx=15)
+            ttk.Label(card, text=card_info[0], style='Subtitle.TLabel').pack(pady=(10, 3), padx=12)
+            label = tk.Label(
+                card, 
+                text="$0.00", 
+                font=('Segoe UI', 18, 'bold'),
+                fg=card_info[2],
+                bg=COLORS["bg_secondary"]
+            )
+            label.pack(pady=(0, 10), padx=12)
+            
+            if card_info[1] == "income":
+                self.income_label = label
+            elif card_info[1] == "expenses":
+                self.expenses_label = label
+            elif card_info[1] == "budget":
+                self.budget_label = label
+            elif card_info[1] == "balance":
+                self.balance_label = label
 
-        # Expenses Card
-        expenses_card = tk.Frame(summary_container, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["danger"])
-        expenses_card.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
+        # Content Frame - Split layout for transactions and chart
+        content_frame = tk.Frame(main_frame, bg=COLORS["bg_primary"])
+        content_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
 
-        ttk.Label(expenses_card, text="Expenses", style='Subtitle.TLabel').pack(pady=(15, 5), padx=15)
-        self.expenses_label = tk.Label(
-            expenses_card, 
-            text="$0.00", 
-            font=('Segoe UI', 24, 'bold'),
-            fg=COLORS["danger"],
-            bg=COLORS["bg_secondary"]
-        )
-        self.expenses_label.pack(pady=(0, 15), padx=15)
+        # Left side - Transactions
+        left_frame = tk.Frame(content_frame, bg=COLORS["bg_primary"])
+        left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
 
-        # Budget Card
-        budget_card = tk.Frame(summary_container, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["warning"])
-        budget_card.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
+        ttk.Label(left_frame, text="Recent Transactions", style='Subtitle.TLabel').pack(fill=tk.X, pady=(0, 8))
 
-        ttk.Label(budget_card, text="Budget", style='Subtitle.TLabel').pack(pady=(15, 5), padx=15)
-        self.budget_label = tk.Label(
-            budget_card, 
-            text="$0.00", 
-            font=('Segoe UI', 24, 'bold'),
-            fg=COLORS["warning"],
-            bg=COLORS["bg_secondary"]
-        )
-        self.budget_label.pack(pady=(0, 15), padx=15)
+        list_frame = tk.Frame(left_frame, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["border"])
+        list_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Balance Card
-        balance_card = tk.Frame(summary_container, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["accent"])
-        balance_card.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(10, 0))
-
-        ttk.Label(balance_card, text="Remaining", style='Subtitle.TLabel').pack(pady=(15, 5), padx=15)
-        self.balance_label = tk.Label(
-            balance_card, 
-            text="$0.00", 
-            font=('Segoe UI', 24, 'bold'),
-            fg=COLORS["accent_light"],
-            bg=COLORS["bg_secondary"]
-        )
-        self.balance_label.pack(pady=(0, 15), padx=15)
-
-        # Transactions Frame
-        transactions_label = ttk.Label(main_frame, text="Recent Transactions", style='Subtitle.TLabel')
-        transactions_label.pack(fill=tk.X, pady=(20, 10))
-
-        # Transactions List
-        list_frame = tk.Frame(main_frame, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["border"])
-        list_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
-
-        # Scrollbar for transactions
         scrollbar = ttk.Scrollbar(list_frame)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
@@ -214,8 +197,6 @@ class BudgetApp:
             bg=COLORS["bg_secondary"],
             fg=COLORS["text_primary"],
             font=('Segoe UI', 9),
-            height=8,
-            width=80,
             relief=tk.FLAT,
             state=tk.DISABLED,
             yscrollcommand=scrollbar.set
@@ -223,9 +204,19 @@ class BudgetApp:
         self.transactions_text.pack(fill=tk.BOTH, expand=True, padx=1, pady=1)
         scrollbar.config(command=self.transactions_text.yview)
 
+        # Right side - Pie Chart
+        right_frame = tk.Frame(content_frame, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["border"])
+        right_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(10, 0))
+
+        chart_label = ttk.Label(right_frame, text="Expenses Breakdown", style='Subtitle.TLabel')
+        chart_label.pack(fill=tk.X, pady=8, padx=8)
+
+        self.chart_frame = tk.Frame(right_frame, bg=COLORS["bg_secondary"])
+        self.chart_frame.pack(fill=tk.BOTH, expand=True, padx=1, pady=1)
+
         # Buttons Frame
         button_frame = tk.Frame(main_frame, bg=COLORS["bg_primary"])
-        button_frame.pack(fill=tk.X, pady=(0, 0))
+        button_frame.pack(fill=tk.X, pady=(0, 8))
 
         add_income_btn = tk.Button(
             button_frame,
@@ -233,13 +224,13 @@ class BudgetApp:
             command=self.add_income,
             bg=COLORS["success"],
             fg=COLORS["text_primary"],
-            font=('Segoe UI', 11, 'bold'),
+            font=('Segoe UI', 10, 'bold'),
             relief=tk.FLAT,
-            padx=20,
-            pady=12,
+            padx=15,
+            pady=10,
             cursor="hand2"
         )
-        add_income_btn.pack(side=tk.LEFT, padx=(0, 5), fill=tk.BOTH, expand=True)
+        add_income_btn.pack(side=tk.LEFT, padx=(0, 4), fill=tk.BOTH, expand=True)
 
         add_expense_btn = tk.Button(
             button_frame,
@@ -247,27 +238,13 @@ class BudgetApp:
             command=self.add_expense,
             bg=COLORS["danger"],
             fg=COLORS["text_primary"],
-            font=('Segoe UI', 11, 'bold'),
+            font=('Segoe UI', 10, 'bold'),
             relief=tk.FLAT,
-            padx=20,
-            pady=12,
+            padx=15,
+            pady=10,
             cursor="hand2"
         )
-        add_expense_btn.pack(side=tk.LEFT, padx=5, fill=tk.BOTH, expand=True)
-
-        chart_btn = tk.Button(
-            button_frame,
-            text="📊 Expenses Chart",
-            command=self.show_pie_chart,
-            bg=COLORS["accent"],
-            fg=COLORS["text_primary"],
-            font=('Segoe UI', 11, 'bold'),
-            relief=tk.FLAT,
-            padx=20,
-            pady=12,
-            cursor="hand2"
-        )
-        chart_btn.pack(side=tk.LEFT, padx=5, fill=tk.BOTH, expand=True)
+        add_expense_btn.pack(side=tk.LEFT, padx=4, fill=tk.BOTH, expand=True)
 
         budget_btn = tk.Button(
             button_frame,
@@ -275,45 +252,41 @@ class BudgetApp:
             command=self.set_budget,
             bg=COLORS["warning"],
             fg=COLORS["text_primary"],
-            font=('Segoe UI', 11, 'bold'),
+            font=('Segoe UI', 10, 'bold'),
             relief=tk.FLAT,
-            padx=20,
-            pady=12,
+            padx=15,
+            pady=10,
             cursor="hand2"
         )
-        budget_btn.pack(side=tk.LEFT, padx=5, fill=tk.BOTH, expand=True)
-
-        # Second row of buttons
-        button_frame2 = tk.Frame(main_frame, bg=COLORS["bg_primary"])
-        button_frame2.pack(fill=tk.X, pady=(10, 0))
+        budget_btn.pack(side=tk.LEFT, padx=4, fill=tk.BOTH, expand=True)
 
         delete_btn = tk.Button(
-            button_frame2,
+            button_frame,
             text="🗑️ Delete Expense",
             command=self.delete_expense,
             bg="#8b5cf6",
             fg=COLORS["text_primary"],
             font=('Segoe UI', 10, 'bold'),
             relief=tk.FLAT,
-            padx=20,
+            padx=15,
             pady=10,
             cursor="hand2"
         )
-        delete_btn.pack(side=tk.LEFT, padx=(0, 5), fill=tk.BOTH, expand=True)
+        delete_btn.pack(side=tk.LEFT, padx=4, fill=tk.BOTH, expand=True)
 
         clear_month_btn = tk.Button(
-            button_frame2,
+            button_frame,
             text="⚠️ Clear Month",
             command=self.clear_month,
             bg="#dc2626",
             fg=COLORS["text_primary"],
             font=('Segoe UI', 10, 'bold'),
             relief=tk.FLAT,
-            padx=20,
+            padx=15,
             pady=10,
             cursor="hand2"
         )
-        clear_month_btn.pack(side=tk.LEFT, padx=5, fill=tk.BOTH, expand=True)
+        clear_month_btn.pack(side=tk.LEFT, padx=(4, 0), fill=tk.BOTH, expand=True)
 
     # --------------------------
     # Features
@@ -529,6 +502,9 @@ class BudgetApp:
 
         # Update transactions list
         self.update_transactions_list()
+        
+        # Update pie chart
+        self.update_pie_chart()
 
     def update_transactions_list(self):
         """Display recent transactions in the text widget"""
@@ -744,7 +720,8 @@ class BudgetApp:
             messagebox.showinfo("Success", f"All data for {self.current_month.get()} has been cleared")
 
 
-    def show_pie_chart(self):
+    def update_pie_chart(self):
+        """Update the embedded pie chart"""
         self.ensure_month_exists()
 
         month_data = self.data[self.current_month.get()]
@@ -753,13 +730,26 @@ class BudgetApp:
             categories.setdefault(expense["category"], 0)
             categories[expense["category"]] += expense["amount"]
 
+        # Clear previous chart
+        for widget in self.chart_frame.winfo_children():
+            widget.destroy()
+
         if not categories:
-            messagebox.showinfo("No Data", "No expenses for this month.")
+            # Show placeholder when no data
+            placeholder = tk.Label(
+                self.chart_frame,
+                text="No expenses yet",
+                font=('Segoe UI', 12),
+                fg=COLORS["text_secondary"],
+                bg=COLORS["bg_secondary"]
+            )
+            placeholder.pack(expand=True)
             return
 
         # Create modern-looking pie chart
-        fig, ax = plt.subplots(figsize=(10, 7), facecolor=COLORS["bg_primary"])
-        ax.set_facecolor(COLORS["bg_primary"])
+        fig = Figure(figsize=(5, 4), dpi=100, facecolor=COLORS["bg_secondary"])
+        ax = fig.add_subplot(111)
+        ax.set_facecolor(COLORS["bg_secondary"])
         
         # Color palette for the pie chart
         colors = [
@@ -778,25 +768,25 @@ class BudgetApp:
             autopct='%1.1f%%',
             startangle=90,
             colors=colors[:len(categories)],
-            textprops={'fontsize': 10, 'color': COLORS["text_primary"], 'weight': 'bold'}
+            textprops={'fontsize': 8, 'color': COLORS["text_primary"], 'weight': 'bold'}
         )
         
         # Style the percentage text
         for autotext in autotexts:
             autotext.set_color("white")
             autotext.set_fontweight('bold')
-            autotext.set_fontsize(9)
+            autotext.set_fontsize(8)
 
-        ax.set_title(
-            f"Expenses Breakdown - {self.current_month.get()}",
-            fontsize=14,
-            color=COLORS["text_primary"],
-            weight='bold',
-            pad=20
-        )
+        # Embed in Tkinter
+        canvas = FigureCanvasTkAgg(fig, master=self.chart_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        self.chart_canvas = canvas
 
-        plt.tight_layout()
-        plt.show()
+
+    def show_pie_chart(self):
+        """Deprecated - chart now updates automatically"""
+        pass
 
 
 # --------------------------
