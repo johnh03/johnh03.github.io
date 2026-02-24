@@ -260,6 +260,20 @@ class BudgetApp:
         )
         budget_btn.pack(side=tk.LEFT, padx=4, fill=tk.BOTH, expand=True)
 
+        edit_btn = tk.Button(
+            button_frame,
+            text="✏️ Edit Expense",
+            command=self.edit_expense,
+            bg=COLORS["accent"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 10, 'bold'),
+            relief=tk.FLAT,
+            padx=15,
+            pady=10,
+            cursor="hand2"
+        )
+        edit_btn.pack(side=tk.LEFT, padx=4, fill=tk.BOTH, expand=True)
+
         delete_btn = tk.Button(
             button_frame,
             text="🗑️ Delete Expense",
@@ -373,7 +387,7 @@ class BudgetApp:
 
         window = tk.Toplevel(self.root)
         window.title("Add Expense")
-        window.geometry("350x350")
+        window.geometry("350x450")
         window.configure(bg=COLORS["bg_primary"])
         window.resizable(False, False)
 
@@ -419,13 +433,42 @@ class BudgetApp:
             state='readonly',
             width=30
         )
-        payment_combo.pack(fill=tk.X, pady=(0, 20))
+        payment_combo.pack(fill=tk.X, pady=(0, 15))
+
+        # Day of Month
+        ttk.Label(frame, text="Day of Month:", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        day_var = tk.StringVar()
+        day_combo = ttk.Combobox(
+            frame,
+            textvariable=day_var,
+            values=[str(i) for i in range(1, 32)],
+            state='readonly',
+            width=30
+        )
+        day_combo.pack(fill=tk.X, pady=(0, 15))
+        # Set default to today's day
+        day_combo.set(str(datetime.now().day))
+
+        # Note (Optional)
+        ttk.Label(frame, text="Note (Optional):", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        note_entry = tk.Entry(
+            frame,
+            bg=COLORS["bg_secondary"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 11),
+            relief=tk.FLAT,
+            insertbackground=COLORS["accent_light"],
+            bd=1
+        )
+        note_entry.pack(fill=tk.X, pady=(0, 20))
 
         def submit():
             try:
                 amount = float(amount_entry.get())
                 category = category_var.get()
                 payment = payment_var.get()
+                day = day_var.get()
+                note = note_entry.get().strip()
 
                 if amount <= 0:
                     messagebox.showerror("Invalid", "Amount must be positive", parent=window)
@@ -436,13 +479,20 @@ class BudgetApp:
                 if not payment:
                     messagebox.showerror("Invalid", "Please select a payment method", parent=window)
                     return
+                if not day:
+                    messagebox.showerror("Invalid", "Please select a day", parent=window)
+                    return
 
-                self.data[self.current_month.get()]["expenses"].append({
+                expense_data = {
                     "amount": amount,
                     "category": category,
                     "payment": payment,
-                    "date": datetime.now().strftime("%m/%d/%y")
-                })
+                    "day": int(day)
+                }
+                if note:
+                    expense_data["note"] = note
+
+                self.data[self.current_month.get()]["expenses"].append(expense_data)
 
                 save_data(self.data)
                 self.update_summary()
@@ -525,12 +575,16 @@ class BudgetApp:
 
         # Display expenses
         for i, expense in enumerate(month_data["expenses"], 1):
-            date = expense.get("date", "N/A")
+            day = expense.get("day", "N/A")
             category = expense["category"]
             amount = expense["amount"]
             payment = expense["payment"]
+            note = expense.get("note", "")
             
-            line = f"{i}. {category:<20} ${amount:>8.2f}  |  {payment:<8}  |  {date}\n"
+            line = f"{i}. {category:<20} ${amount:>8.2f}  |  {payment:<8}  |  Day {day}"
+            if note:
+                line += f"\n      Note: {note}"
+            line += "\n"
             self.transactions_text.insert(tk.END, line)
 
         self.transactions_text.config(state=tk.DISABLED)
@@ -589,6 +643,247 @@ class BudgetApp:
             text="Set Budget",
             command=submit,
             bg=COLORS["warning"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 10, 'bold'),
+            relief=tk.FLAT,
+            padx=15,
+            pady=8,
+            cursor="hand2"
+        )
+        submit_btn.pack(side=tk.RIGHT, padx=(5, 0))
+
+        cancel_btn = tk.Button(
+            button_frame,
+            text="Cancel",
+            command=window.destroy,
+            bg=COLORS["bg_secondary"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 10),
+            relief=tk.FLAT,
+            padx=15,
+            pady=8,
+            cursor="hand2"
+        )
+        cancel_btn.pack(side=tk.RIGHT)
+
+    def edit_expense(self):
+        """Edit a specific expense from the current month"""
+        self.ensure_month_exists()
+
+        month_data = self.data[self.current_month.get()]
+        if not month_data["expenses"]:
+            messagebox.showinfo("No Data", "No expenses to edit")
+            return
+
+        window = tk.Toplevel(self.root)
+        window.title("Edit Expense")
+        window.geometry("400x300")
+        window.configure(bg=COLORS["bg_primary"])
+        window.resizable(False, False)
+
+        window.transient(self.root)
+        window.grab_set()
+
+        frame = tk.Frame(window, bg=COLORS["bg_primary"])
+        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+        ttk.Label(frame, text="Select expense to edit:", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 10))
+
+        # Create listbox with expenses
+        listbox_frame = tk.Frame(frame, bg=COLORS["bg_secondary"], highlightthickness=1, highlightbackground=COLORS["border"])
+        listbox_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
+
+        scrollbar = ttk.Scrollbar(listbox_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        listbox = tk.Listbox(
+            listbox_frame,
+            bg=COLORS["bg_secondary"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 10),
+            yscrollcommand=scrollbar.set,
+            relief=tk.FLAT,
+            bd=0
+        )
+        listbox.pack(fill=tk.BOTH, expand=True, padx=1, pady=1)
+        scrollbar.config(command=listbox.yview)
+
+        # Populate listbox
+        for i, expense in enumerate(month_data["expenses"]):
+            day = expense.get("day", "N/A")
+            category = expense["category"]
+            amount = expense["amount"]
+            payment = expense["payment"]
+            listbox.insert(tk.END, f"{category:<15} ${amount:>8.2f}  |  {payment:<8}  |  Day {day}")
+
+        def edit():
+            selection = listbox.curselection()
+            if not selection:
+                messagebox.showwarning("No Selection", "Please select an expense to edit", parent=window)
+                return
+
+            idx = selection[0]
+            expense = month_data["expenses"][idx]
+            window.destroy()
+            self.show_edit_expense_dialog(idx, expense)
+
+        button_frame = tk.Frame(frame, bg=COLORS["bg_primary"])
+        button_frame.pack(fill=tk.X)
+
+        edit_btn = tk.Button(
+            button_frame,
+            text="Edit",
+            command=edit,
+            bg=COLORS["accent"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 10, 'bold'),
+            relief=tk.FLAT,
+            padx=15,
+            pady=8,
+            cursor="hand2"
+        )
+        edit_btn.pack(side=tk.RIGHT, padx=(5, 0))
+
+        cancel_btn = tk.Button(
+            button_frame,
+            text="Cancel",
+            command=window.destroy,
+            bg=COLORS["bg_secondary"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 10),
+            relief=tk.FLAT,
+            padx=15,
+            pady=8,
+            cursor="hand2"
+        )
+        cancel_btn.pack(side=tk.RIGHT)
+
+    def show_edit_expense_dialog(self, idx, expense):
+        """Show dialog to edit an expense"""
+        window = tk.Toplevel(self.root)
+        window.title("Edit Expense")
+        window.geometry("350x450")
+        window.configure(bg=COLORS["bg_primary"])
+        window.resizable(False, False)
+
+        # Center the window
+        window.transient(self.root)
+        window.grab_set()
+
+        frame = tk.Frame(window, bg=COLORS["bg_primary"])
+        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+        # Amount
+        ttk.Label(frame, text="Amount:", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        amount_entry = tk.Entry(
+            frame,
+            bg=COLORS["bg_secondary"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 11),
+            relief=tk.FLAT,
+            insertbackground=COLORS["accent_light"],
+            bd=1
+        )
+        amount_entry.pack(fill=tk.X, pady=(0, 15))
+        amount_entry.insert(0, str(expense["amount"]))
+
+        # Category
+        ttk.Label(frame, text="Category:", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        category_var = tk.StringVar(value=expense["category"])
+        category_combo = ttk.Combobox(
+            frame,
+            textvariable=category_var,
+            values=CATEGORIES,
+            state='readonly',
+            width=30
+        )
+        category_combo.pack(fill=tk.X, pady=(0, 15))
+
+        # Payment Method
+        ttk.Label(frame, text="Payment Method:", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        payment_var = tk.StringVar(value=expense["payment"])
+        payment_combo = ttk.Combobox(
+            frame,
+            textvariable=payment_var,
+            values=PAYMENT_METHODS,
+            state='readonly',
+            width=30
+        )
+        payment_combo.pack(fill=tk.X, pady=(0, 15))
+
+        # Day of Month
+        ttk.Label(frame, text="Day of Month:", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        day_var = tk.StringVar(value=str(expense.get("day", datetime.now().day)))
+        day_combo = ttk.Combobox(
+            frame,
+            textvariable=day_var,
+            values=[str(i) for i in range(1, 32)],
+            state='readonly',
+            width=30
+        )
+        day_combo.pack(fill=tk.X, pady=(0, 15))
+
+        # Note (Optional)
+        ttk.Label(frame, text="Note (Optional):", style='Subtitle.TLabel').pack(anchor=tk.W, pady=(0, 5))
+        note_entry = tk.Entry(
+            frame,
+            bg=COLORS["bg_secondary"],
+            fg=COLORS["text_primary"],
+            font=('Segoe UI', 11),
+            relief=tk.FLAT,
+            insertbackground=COLORS["accent_light"],
+            bd=1
+        )
+        note_entry.pack(fill=tk.X, pady=(0, 20))
+        if "note" in expense:
+            note_entry.insert(0, expense["note"])
+
+        def submit():
+            try:
+                amount = float(amount_entry.get())
+                category = category_var.get()
+                payment = payment_var.get()
+                day = day_var.get()
+                note = note_entry.get().strip()
+
+                if amount <= 0:
+                    messagebox.showerror("Invalid", "Amount must be positive", parent=window)
+                    return
+                if not category:
+                    messagebox.showerror("Invalid", "Please select a category", parent=window)
+                    return
+                if not payment:
+                    messagebox.showerror("Invalid", "Please select a payment method", parent=window)
+                    return
+                if not day:
+                    messagebox.showerror("Invalid", "Please select a day", parent=window)
+                    return
+
+                self.data[self.current_month.get()]["expenses"][idx] = {
+                    "amount": amount,
+                    "category": category,
+                    "payment": payment,
+                    "day": int(day)
+                }
+                if note:
+                    self.data[self.current_month.get()]["expenses"][idx]["note"] = note
+
+                save_data(self.data)
+                self.update_summary()
+                messagebox.showinfo("Success", "Expense updated successfully", parent=window)
+                window.destroy()
+
+            except ValueError:
+                messagebox.showerror("Error", "Please enter a valid amount", parent=window)
+
+        button_frame = tk.Frame(frame, bg=COLORS["bg_primary"])
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+
+        submit_btn = tk.Button(
+            button_frame,
+            text="Save Changes",
+            command=submit,
+            bg=COLORS["accent"],
             fg=COLORS["text_primary"],
             font=('Segoe UI', 10, 'bold'),
             relief=tk.FLAT,
