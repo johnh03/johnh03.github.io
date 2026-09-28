@@ -1,0 +1,350 @@
+body {
+  background: #f2f4ef;
+  color: #23352f;
+}
+
+.affirmation-app {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.5rem 0 2rem;
+}
+
+.app-heading {
+  max-width: 680px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.eyebrow {
+  color: #ae5e48;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.app-heading h2 {
+  margin: 0.45rem 0;
+  color: #23352f;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.12;
+}
+
+.app-heading > p:last-child {
+  color: #65736c;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+  align-items: stretch;
+  gap: 1.25rem;
+}
+
+.settings-panel,
+.status-panel {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #d8dfd7;
+  border-radius: 8px;
+}
+
+.settings-panel {
+  background: #fff;
+}
+
+.settings-panel h3,
+.status-panel h3 {
+  margin-bottom: 1.25rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+}
+
+.settings-panel label {
+  display: block;
+  margin: 1rem 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.settings-panel select,
+.settings-panel textarea,
+.interval-input input,
+.random-interval-inputs input {
+  width: 100%;
+  border: 1px solid #c9d2ca;
+  border-radius: 5px;
+  background: #fff;
+  color: #23352f;
+  font: inherit;
+}
+
+.settings-panel select,
+.interval-input input,
+.random-interval-inputs input {
+  min-height: 44px;
+  padding: 0.55rem 0.7rem;
+}
+
+.settings-panel textarea {
+  display: block;
+  min-height: 132px;
+  padding: 0.7rem;
+  resize: vertical;
+}
+
+.settings-panel select:focus-visible,
+.settings-panel textarea:focus-visible,
+.interval-input input:focus-visible,
+.random-interval-inputs input:focus-visible,
+.button:focus-visible,
+.dialog-close:focus-visible {
+  outline: 3px solid #dc9477;
+  outline-offset: 2px;
+}
+
+.field-hint {
+  margin-top: 0.35rem;
+  color: #65736c;
+  font-size: 0.8rem;
+}
+
+.form-message {
+  min-height: 1.3rem;
+  color: #346b4e;
+  font-size: 0.84rem;
+}
+
+.interval-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.interval-row label {
+  margin: 0;
+}
+
+.interval-input {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.interval-input input {
+  width: 76px;
+}
+
+.interval-input span {
+  color: #65736c;
+  font-size: 0.9rem;
+}
+
+.random-interval-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.random-interval-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.random-interval-inputs input {
+  width: 66px;
+  min-width: 0;
+  padding: 0.55rem;
+}
+
+.random-interval-inputs span {
+  color: #65736c;
+  white-space: nowrap;
+}
+
+.random-interval-row[hidden] {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.action-row,
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: #315d4c;
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: #244938;
+}
+
+.button-secondary {
+  border-color: #b9c8bd;
+  background: transparent;
+  color: #315d4c;
+}
+
+.button-secondary:hover {
+  background: #edf2ed;
+}
+
+.status-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #e2ebe3;
+}
+
+.status-topline {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+  color: #52665a;
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #99a69e;
+}
+
+.status-dot.is-active {
+  background: #48825d;
+  box-shadow: 0 0 0 4px rgba(72, 130, 93, 0.14);
+}
+
+.status-panel h3 {
+  margin-bottom: 0.8rem;
+}
+
+.status-panel blockquote,
+.affirmation-dialog blockquote {
+  margin: 0;
+  color: #294a3c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  line-height: 1.35;
+}
+
+.next-reminder {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #c5d4c8;
+  color: #52665a;
+  font-size: 0.9rem;
+}
+
+.affirmation-dialog {
+  width: min(540px, calc(100% - 2rem));
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid #d8dfd7;
+  border-radius: 8px;
+  background: #fbfcf8;
+  color: #23352f;
+  box-shadow: 0 18px 70px rgba(19, 38, 29, 0.25);
+}
+
+.affirmation-dialog::backdrop {
+  background: rgba(22, 39, 31, 0.58);
+  backdrop-filter: blur(3px);
+}
+
+.dialog-dismiss-form {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.dialog-close {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #52665a;
+  font-size: 1.75rem;
+  cursor: pointer;
+}
+
+.affirmation-dialog h2 {
+  margin: 0.55rem 0 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+
+.affirmation-dialog blockquote {
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+}
+
+@media (max-width: 720px) {
+  main {
+    padding: 1.25rem;
+  }
+
+  .affirmation-app {
+    padding-top: 0.5rem;
+  }
+
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .status-topline {
+    margin-bottom: 1.2rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .interval-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .random-interval-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .action-row .button {
+    flex: 1 1 100%;
+  }
+}

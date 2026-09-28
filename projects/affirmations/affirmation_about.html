@@ -5,7 +5,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Affirmations</title>
       <link rel="stylesheet" href="../../style.css">
-      <link rel="stylesheet" href="../labs_about.css">
+      <link rel="stylesheet" href="affirmations.css">
    </head>
    <body>
       <header>
@@ -19,17 +19,70 @@
          </nav>
       </header>
       <main>
-         <section class="lab-details">
-            <h2>Affirmations: Introduction</h2>
-            <p>
-               This project aims to create a program that displays random positive affirmations to the user while they are working on their daily tasks. The goal is to provide motivation and encouragement throughout the day, helping users maintain a positive mindset and improve their overall well-being.
-            </p>
-            <div class="lab-resources">
-               <div class="resource-card">
-                  <h3>Affirmations</h3>
-                  <p>A program to allow random popups of positive affirmations while doing daily tasks.</p>
-                  <a href="#" target="_blank">View Project</a>
-               </div>
+         <section class="affirmation-app" aria-labelledby="app-title">
+            <div class="app-heading">
+               <p class="eyebrow">A little room to breathe</p>
+               <h2 id="app-title">Make space for a kinder thought.</h2>
+               <p>Choose a reminder rhythm, then get back to what matters.</p>
+            </div>
+
+            <div class="app-layout">
+               <section class="settings-panel" aria-labelledby="settings-title">
+                  <h3 id="settings-title">Your reminders</h3>
+                  <label for="affirmation-mode">Affirmation source</label>
+                  <select id="affirmation-mode">
+                     <option value="mixed">Mix mine with the included ones</option>
+                     <option value="custom">Only my affirmations</option>
+                     <option value="preset">Included affirmations</option>
+                  </select>
+
+                  <label for="custom-affirmations">Your affirmations</label>
+                  <textarea id="custom-affirmations" rows="6" placeholder="One affirmation per line&#10;I can take this one step at a time."></textarea>
+                  <p class="field-hint">Your list stays saved in this browser.</p>
+                  <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+
+                  <label for="interval-mode">Reminder timing</label>
+                  <select id="interval-mode">
+                     <option value="fixed">Regular interval</option>
+                     <option value="random">Random interval</option>
+                  </select>
+
+                  <div class="interval-row" id="fixed-interval-row">
+                     <label for="interval-minutes">Remind me every</label>
+                     <div class="interval-input">
+                        <input id="interval-minutes" type="number" min="1" max="240" value="20" inputmode="numeric">
+                        <span>minutes</span>
+                     </div>
+                  </div>
+
+                  <div class="random-interval-row" id="random-interval-row" hidden>
+                     <span>Remind me between</span>
+                     <div class="random-interval-inputs">
+                        <label class="visually-hidden" for="minimum-interval">Minimum interval in minutes</label>
+                        <input id="minimum-interval" type="number" min="1" max="240" value="15" inputmode="numeric">
+                        <span>and</span>
+                        <label class="visually-hidden" for="maximum-interval">Maximum interval in minutes</label>
+                        <input id="maximum-interval" type="number" min="1" max="240" value="30" inputmode="numeric">
+                        <span>minutes</span>
+                     </div>
+                  </div>
+
+                  <div class="action-row">
+                     <button class="button button-primary" id="start-button" type="button">Start reminders</button>
+                     <button class="button button-secondary" id="show-now-button" type="button">Show one now</button>
+                  </div>
+               </section>
+
+               <section class="status-panel" aria-labelledby="status-title">
+                  <div class="status-topline">
+                     <span class="status-dot" id="status-dot"></span>
+                     <span id="status-label">Reminders are paused</span>
+                  </div>
+                  <h3 id="status-title">A thought for right now</h3>
+                  <blockquote id="preview-affirmation">You are allowed to begin again, as many times as you need.</blockquote>
+                  <div class="next-reminder" id="next-reminder" aria-live="polite">Start a timer when you are ready.</div>
+                  <p class="field-hint">Keep this tab open for timed reminders.</p>
+               </section>
             </div>
          </section>
       </main>
@@ -44,5 +97,18 @@
             </a>
          </div>
       </footer>
+      <dialog class="affirmation-dialog" id="affirmation-dialog" aria-labelledby="dialog-title">
+         <form method="dialog" class="dialog-dismiss-form">
+            <button class="dialog-close" aria-label="Close affirmation">&times;</button>
+         </form>
+         <p class="eyebrow">A moment for you</p>
+         <h2 id="dialog-title">Take a breath.</h2>
+         <blockquote id="dialog-affirmation"></blockquote>
+         <div class="dialog-actions">
+            <button class="button button-secondary" id="another-button" type="button">Another thought</button>
+            <button class="button button-primary" id="close-dialog-button" type="button">Thank you</button>
+         </div>
+      </dialog>
+      <script src="affirmations.js" defer></script>
    </body>
 </html>
