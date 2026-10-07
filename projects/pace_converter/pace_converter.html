@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="Convert your running pace into finish times for any distance or popular race.">
+      <title>Pace Converter</title>
+      <link rel="stylesheet" href="../../style.css">
+      <link rel="stylesheet" href="pace_converter.css">
+   </head>
+   <body>
+      <header>
+         <h1>Pace Converter</h1>
+         <nav>
+            <ul>
+               <li><a href="../../index.html">Home</a></li>
+               <li><a href="../labs.html" class="active">Projects</a></li>
+               <li><a href="../lab02/huangj24-JohnHuang-resume.html">Resume</a></li>
+            </ul>
+         </nav>
+      </header>
+      <main>
+         <div class="pace-app">
+            <section class="app-heading" aria-labelledby="app-title">
+               <p class="eyebrow">Plan your next run</p>
+               <h2 id="app-title">Your pace, translated.</h2>
+               <p>Enter a pace to see your projected time over any distance.</p>
+            </section>
+
+            <section class="converter-layout" aria-label="Pace and distance converter">
+               <form class="input-panel" id="converter-form">
+                  <fieldset class="pace-fieldset">
+                     <legend>Your running pace</legend>
+                     <div class="pace-inputs">
+                        <label class="time-part">
+                           <span>Minutes</span>
+                           <input id="pace-minutes" name="pace-minutes" type="number" min="0" max="999" value="8" inputmode="numeric" required>
+                        </label>
+                        <span class="time-separator" aria-hidden="true">:</span>
+                        <label class="time-part">
+                           <span>Seconds</span>
+                           <input id="pace-seconds" name="pace-seconds" type="number" min="0" max="59" value="0" inputmode="numeric" required>
+                        </label>
+                        <fieldset class="unit-toggle" aria-label="Pace unit">
+                           <label><input type="radio" name="pace-unit" value="mile" checked><span>/ mile</span></label>
+                           <label><input type="radio" name="pace-unit" value="km"><span>/ km</span></label>
+                        </fieldset>
+                     </div>
+                  </fieldset>
+
+                  <div class="distance-field">
+                     <label for="distance-value">Convert to a distance</label>
+                     <div class="distance-inputs">
+                        <input id="distance-value" name="distance-value" type="number" min="0.001" max="100000" step="any" value="5" inputmode="decimal" required>
+                        <select id="distance-unit" name="distance-unit" aria-label="Distance unit">
+                           <option value="m">meters</option>
+                           <option value="km" selected>kilometers</option>
+                           <option value="mile">miles</option>
+                        </select>
+                     </div>
+                  </div>
+                  <p class="input-message" id="input-message" role="status" aria-live="polite"></p>
+               </form>
+
+               <section class="result-panel" aria-labelledby="result-title" aria-live="polite">
+                  <p class="result-label" id="result-title">Estimated finish time</p>
+                  <p class="result-time" id="custom-result">--:--</p>
+                  <p class="result-distance" id="result-distance">for 5 kilometers</p>
+                  <div class="pace-equivalents">
+                     <div><span>Per kilometer</span><strong id="pace-per-km">--:-- / km</strong></div>
+                     <div><span>Per mile</span><strong id="pace-per-mile">--:-- / mi</strong></div>
+                  </div>
+               </section>
+            </section>
+
+            <section class="race-section" aria-labelledby="race-title">
+               <div class="race-heading">
+                  <div>
+                     <p class="eyebrow">At a glance</p>
+                     <h2 id="race-title">Race day projections</h2>
+                  </div>
+                  <p>Based on your current pace</p>
+               </div>
+               <div class="table-wrap">
+                  <table>
+                     <thead>
+                        <tr><th scope="col">Race distance</th><th scope="col">Distance</th><th scope="col">Finish time</th></tr>
+                     </thead>
+                     <tbody id="race-results">
+                        <tr><th scope="row">400 meters</th><td>400 m</td><td>--:--</td></tr>
+                        <tr><th scope="row">800 meters</th><td>800 m</td><td>--:--</td></tr>
+                        <tr><th scope="row">5K</th><td>5 km</td><td>--:--</td></tr>
+                        <tr><th scope="row">10K</th><td>10 km</td><td>--:--</td></tr>
+                        <tr><th scope="row">15K</th><td>15 km</td><td>--:--</td></tr>
+                        <tr><th scope="row">Half marathon</th><td>21.0975 km</td><td>--:--</td></tr>
+                        <tr><th scope="row">Marathon</th><td>42.195 km</td><td>--:--</td></tr>
+                     </tbody>
+                  </table>
+               </div>
+            </section>
+         </div>
+      </main>
+      <footer>
+         <p>&copy; 2025 John Huang</p>
+         <div class="social-icons">
+            <a href="https://github.com/johnh03" target="_blank" rel="noopener noreferrer">
+               <img src="../../images/github_logo.png" alt="GitHub Logo">
+            </a>
+            <a href="https://linkedin.com/in/john-huang-rpi0330" target="_blank" rel="noopener noreferrer">
+               <img src="../../images/linkedin_logo.png" alt="LinkedIn Logo">
+            </a>
+         </div>
+      </footer>
+      <script src="pace_converter.js" defer></script>
+   </body>
+</html>

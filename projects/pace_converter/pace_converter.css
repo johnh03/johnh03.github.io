@@ -1,0 +1,326 @@
+body {
+  background: #f3f4ef;
+  color: #1e2925;
+}
+
+.pace-app {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+}
+
+.app-heading {
+  padding: 1.25rem 0 1.75rem;
+  text-align: center;
+}
+
+.eyebrow {
+  color: #bf4b31;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.app-heading h2,
+.race-heading h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.app-heading h2 {
+  margin: 0.35rem 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.12;
+}
+
+.app-heading > p:last-child,
+.race-heading > p {
+  color: #65736c;
+}
+
+.converter-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  gap: 1rem;
+}
+
+.input-panel,
+.result-panel {
+  min-width: 0;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid #d8ddd5;
+  border-radius: 7px;
+}
+
+.input-panel {
+  background: #fff;
+}
+
+.pace-fieldset {
+  padding: 0;
+  border: 0;
+}
+
+.pace-fieldset legend,
+.distance-field > label {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.pace-inputs {
+  display: flex;
+  align-items: end;
+  gap: 0.55rem;
+}
+
+.time-part {
+  display: grid;
+  gap: 0.35rem;
+  color: #65736c;
+  font-size: 0.78rem;
+}
+
+.time-part input,
+.distance-inputs input,
+.distance-inputs select {
+  min-height: 48px;
+  border: 1px solid #c9d2ca;
+  border-radius: 5px;
+  background: #fff;
+  color: #1e2925;
+  font: inherit;
+  font-size: 1.1rem;
+}
+
+.time-part input {
+  width: 84px;
+  padding: 0.55rem;
+  text-align: center;
+}
+
+.time-separator {
+  padding-bottom: 0.55rem;
+  color: #1e2925;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.unit-toggle {
+  display: flex;
+  gap: 0.2rem;
+  margin: 0 0 0 0.45rem;
+  padding: 0.25rem;
+  border: 1px solid #d8ddd5;
+  border-radius: 6px;
+  background: #f3f4ef;
+}
+
+.unit-toggle label {
+  position: relative;
+  cursor: pointer;
+}
+
+.unit-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.unit-toggle span {
+  display: block;
+  padding: 0.55rem 0.65rem;
+  border-radius: 4px;
+  color: #52615a;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.unit-toggle input:checked + span {
+  background: #1e2925;
+  color: #fff;
+}
+
+.unit-toggle input:focus-visible + span {
+  outline: 3px solid #bf4b31;
+  outline-offset: 2px;
+}
+
+.distance-field {
+  margin-top: 1.5rem;
+}
+
+.distance-field > label {
+  display: block;
+}
+
+.distance-inputs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 0.75fr);
+  gap: 0.55rem;
+}
+
+.distance-inputs input,
+.distance-inputs select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+}
+
+.time-part input:focus-visible,
+.distance-inputs input:focus-visible,
+.distance-inputs select:focus-visible {
+  outline: 3px solid #bf4b31;
+  outline-offset: 2px;
+}
+
+.input-message {
+  min-height: 1.3rem;
+  margin-top: 0.5rem;
+  color: #a33324;
+  font-size: 0.85rem;
+}
+
+.result-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #dce9dd;
+}
+
+.result-label {
+  color: #4f6455;
+  font-size: 0.87rem;
+  font-weight: 700;
+}
+
+.result-time {
+  margin: 0.15rem 0;
+  color: #1c4934;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.7rem, 6vw, 4.25rem);
+  line-height: 1.12;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-distance {
+  color: #52665a;
+}
+
+.pace-equivalents {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.7rem;
+  padding-top: 1rem;
+  border-top: 1px solid #bfd0c1;
+}
+
+.pace-equivalents div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pace-equivalents span {
+  color: #52665a;
+  font-size: 0.8rem;
+}
+
+.pace-equivalents strong {
+  color: #1e2925;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.race-section {
+  margin-top: 2.25rem;
+}
+
+.race-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.race-heading h2 {
+  margin-top: 0.2rem;
+  font-size: 1.8rem;
+}
+
+.race-heading > p {
+  padding-bottom: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border-top: 2px solid #1e2925;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.78rem 0.6rem;
+  border-bottom: 1px solid #d8ddd5;
+}
+
+thead th {
+  color: #65736c;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+tbody th {
+  font-weight: 700;
+}
+
+tbody td:last-child {
+  color: #1c4934;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 700px) {
+  main {
+    padding: 1.25rem;
+  }
+
+  .converter-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .race-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .pace-inputs {
+    flex-wrap: wrap;
+  }
+
+  .unit-toggle {
+    margin-left: 0;
+  }
+
+  .distance-inputs {
+    grid-template-columns: minmax(0, 1fr) minmax(110px, 0.8fr);
+  }
+
+  th,
+  td {
+    padding: 0.7rem 0.35rem;
+    font-size: 0.88rem;
+  }
+}
