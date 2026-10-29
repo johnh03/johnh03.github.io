@@ -12,6 +12,14 @@ const raceDistances = [
 
 const minutesInput = document.querySelector("#pace-minutes");
 const secondsInput = document.querySelector("#pace-seconds");
+const hoursTotalInput = document.querySelector("#time-hours");
+const minutesTotalInput = document.querySelector("#time-minutes");
+const secondsTotalInput = document.querySelector("#time-seconds");
+const outputUnitInput = document.querySelector("#pace-output-unit");
+const paceEntry = document.querySelector("#pace-entry");
+const totalTimeEntry = document.querySelector("#total-time-entry");
+const resultTitle = document.querySelector("#result-title");
+const raceDescription = document.querySelector("#race-description");
 const distanceInput = document.querySelector("#distance-value");
 const distanceUnitInput = document.querySelector("#distance-unit");
 const customResult = document.querySelector("#custom-result");
@@ -56,36 +64,80 @@ function getPaceSecondsPerKilometer() {
   return selectedUnit === "mile" ? paceSeconds / (metersPerMile / metersPerKilometer) : paceSeconds;
 }
 
+function getCalculationMode() {
+  return document.querySelector('input[name="calculation-mode"]:checked').value;
+}
+
+function getTotalTimeSeconds() {
+  const hours = Number(hoursTotalInput.value);
+  const minutes = Number(minutesTotalInput.value);
+  const seconds = Number(secondsTotalInput.value);
+
+  if (!Number.isInteger(hours) || hours < 0
+    || !Number.isInteger(minutes) || minutes < 0 || minutes > 59
+    || !Number.isInteger(seconds) || seconds < 0 || seconds > 59) {
+    return null;
+  }
+
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+  return totalSeconds > 0 ? totalSeconds : null;
+}
+
 function getDistanceLabel(distance, unit) {
   const unitLabels = { m: "meter", km: "kilometer", mile: "mile" };
   return `${distance} ${unitLabels[unit]}${distance === 1 ? "" : "s"}`;
 }
 
 function updateResults() {
-  const paceSecondsPerKilometer = getPaceSecondsPerKilometer();
+  const mode = getCalculationMode();
+  const isTotalTimeMode = mode === "total-time";
+  const paceSecondsPerKilometer = isTotalTimeMode ? null : getPaceSecondsPerKilometer();
   const distanceMeters = getDistanceMeters();
   const distance = Number(distanceInput.value);
+  const totalTimeSeconds = isTotalTimeMode ? getTotalTimeSeconds() : null;
 
-  if (paceSecondsPerKilometer === null || distanceMeters === null) {
-    inputMessage.textContent = paceSecondsPerKilometer === null
-      ? "Enter a pace greater than 0, with seconds between 0 and 59."
+  paceEntry.hidden = isTotalTimeMode;
+  totalTimeEntry.hidden = !isTotalTimeMode;
+  [hoursTotalInput, minutesTotalInput, secondsTotalInput, outputUnitInput].forEach((input) => {
+    input.disabled = !isTotalTimeMode;
+  });
+  resultTitle.textContent = isTotalTimeMode ? "Calculated running pace" : "Estimated finish time";
+  raceDescription.textContent = isTotalTimeMode ? "Based on the calculated pace" : "Based on your current pace";
+
+  const invalidTime = isTotalTimeMode ? totalTimeSeconds === null : paceSecondsPerKilometer === null;
+  if (invalidTime || distanceMeters === null) {
+    inputMessage.textContent = invalidTime
+      ? isTotalTimeMode
+        ? "Enter a total time greater than 0, with minutes and seconds between 0 and 59."
+        : "Enter a pace greater than 0, with seconds between 0 and 59."
       : "Enter a distance greater than 0.";
     customResult.textContent = "--:--";
-    resultDistance.textContent = "Check your pace and distance";
+    resultDistance.textContent = isTotalTimeMode ? "Check your time and distance" : "Check your pace and distance";
     pacePerKm.textContent = "--:-- / km";
     pacePerMile.textContent = "--:-- / mi";
     raceRows.forEach((row) => { row.cells[2].textContent = "--:--"; });
     return;
   }
 
+  const calculatedPaceSecondsPerKilometer = isTotalTimeMode
+    ? totalTimeSeconds * metersPerKilometer / distanceMeters
+    : paceSecondsPerKilometer;
+  const selectedPace = outputUnitInput.value === "mile"
+    ? calculatedPaceSecondsPerKilometer * metersPerMile / metersPerKilometer
+    : calculatedPaceSecondsPerKilometer;
+
   inputMessage.textContent = "";
-  customResult.textContent = formatTime(paceSecondsPerKilometer * distanceMeters / metersPerKilometer);
-  resultDistance.textContent = `for ${getDistanceLabel(distance, distanceUnitInput.value)}`;
-  pacePerKm.textContent = `${formatTime(paceSecondsPerKilometer)} / km`;
-  pacePerMile.textContent = `${formatTime(paceSecondsPerKilometer * metersPerMile / metersPerKilometer)} / mi`;
+  customResult.textContent = isTotalTimeMode
+    ? `${formatTime(selectedPace)} / ${outputUnitInput.value === "mile" ? "mi" : "km"}`
+    : formatTime(calculatedPaceSecondsPerKilometer * distanceMeters / metersPerKilometer);
+  resultDistance.textContent = isTotalTimeMode
+    ? `for ${getDistanceLabel(distance, distanceUnitInput.value)} in ${formatTime(totalTimeSeconds)}`
+    : `for ${getDistanceLabel(distance, distanceUnitInput.value)}`;
+  pacePerKm.textContent = `${formatTime(calculatedPaceSecondsPerKilometer)} / km`;
+  pacePerMile.textContent = `${formatTime(calculatedPaceSecondsPerKilometer * metersPerMile / metersPerKilometer)} / mi`;
 
   raceRows.forEach((row, index) => {
-    row.cells[2].textContent = formatTime(paceSecondsPerKilometer * raceDistances[index].meters / metersPerKilometer);
+    row.cells[2].textContent = formatTime(calculatedPaceSecondsPerKilometer * raceDistances[index].meters / metersPerKilometer);
   });
 }
 

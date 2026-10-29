@@ -24,12 +24,18 @@
             <section class="app-heading" aria-labelledby="app-title">
                <p class="eyebrow">Plan your next run</p>
                <h2 id="app-title">Your pace, translated.</h2>
-               <p>Enter a pace to see your projected time over any distance.</p>
+               <p>Enter a pace or total time to calculate your result over any distance.</p>
             </section>
 
             <section class="converter-layout" aria-label="Pace and distance converter">
                <form class="input-panel" id="converter-form">
-                  <fieldset class="pace-fieldset">
+                  <fieldset class="mode-toggle">
+                     <legend>What would you like to calculate?</legend>
+                     <label><input type="radio" name="calculation-mode" value="pace" checked><span>Finish time from pace</span></label>
+                     <label><input type="radio" name="calculation-mode" value="total-time"><span>Pace from total time</span></label>
+                  </fieldset>
+
+                  <fieldset class="pace-fieldset" id="pace-entry">
                      <legend>Your running pace</legend>
                      <div class="pace-inputs">
                         <label class="time-part">
@@ -48,8 +54,33 @@
                      </div>
                   </fieldset>
 
+                  <fieldset class="pace-fieldset total-time-entry" id="total-time-entry" hidden>
+                     <legend>Total time for the distance</legend>
+                     <div class="pace-inputs">
+                        <label class="time-part">
+                           <span>Hours</span>
+                           <input id="time-hours" name="time-hours" type="number" min="0" max="999" value="0" inputmode="numeric" disabled>
+                        </label>
+                        <span class="time-separator" aria-hidden="true">:</span>
+                        <label class="time-part">
+                           <span>Minutes</span>
+                           <input id="time-minutes" name="time-minutes" type="number" min="0" max="59" value="40" inputmode="numeric" disabled>
+                        </label>
+                        <span class="time-separator" aria-hidden="true">:</span>
+                        <label class="time-part">
+                           <span>Seconds</span>
+                           <input id="time-seconds" name="time-seconds" type="number" min="0" max="59" value="0" inputmode="numeric" disabled>
+                        </label>
+                     </div>
+                     <label class="output-unit" for="pace-output-unit">Show calculated pace</label>
+                     <select id="pace-output-unit" name="pace-output-unit" disabled>
+                        <option value="km" selected>per kilometer</option>
+                        <option value="mile">per mile</option>
+                     </select>
+                  </fieldset>
+
                   <div class="distance-field">
-                     <label for="distance-value">Convert to a distance</label>
+                     <label for="distance-value">Distance</label>
                      <div class="distance-inputs">
                         <input id="distance-value" name="distance-value" type="number" min="0.001" max="100000" step="any" value="5" inputmode="decimal" required>
                         <select id="distance-unit" name="distance-unit" aria-label="Distance unit">
@@ -79,7 +110,7 @@
                      <p class="eyebrow">At a glance</p>
                      <h2 id="race-title">Race day projections</h2>
                   </div>
-                  <p>Based on your current pace</p>
+                  <p id="race-description">Based on your current pace</p>
                </div>
                <div class="table-wrap">
                   <table>

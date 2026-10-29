@@ -62,10 +62,58 @@ body {
 }
 
 .pace-fieldset legend,
-.distance-field > label {
+.distance-field > label,
+.mode-toggle legend,
+.output-unit {
   margin-bottom: 0.75rem;
   font-size: 1rem;
   font-weight: 700;
+}
+
+.mode-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.mode-toggle legend {
+  width: 100%;
+}
+
+.mode-toggle label {
+  position: relative;
+  cursor: pointer;
+}
+
+.mode-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.mode-toggle span {
+  display: block;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #d8ddd5;
+  border-radius: 5px;
+  color: #52615a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.mode-toggle input:checked + span {
+  border-color: #1e2925;
+  background: #1e2925;
+  color: #fff;
+}
+
+.mode-toggle input:focus-visible + span {
+  outline: 3px solid #bf4b31;
+  outline-offset: 2px;
 }
 
 .pace-inputs {
@@ -83,7 +131,8 @@ body {
 
 .time-part input,
 .distance-inputs input,
-.distance-inputs select {
+.distance-inputs select,
+.total-time-entry > select {
   min-height: 48px;
   border: 1px solid #c9d2ca;
   border-radius: 5px;
@@ -152,6 +201,24 @@ body {
   margin-top: 1.5rem;
 }
 
+.total-time-entry[hidden] {
+  display: none;
+}
+
+.total-time-entry .pace-inputs {
+  flex-wrap: wrap;
+}
+
+.output-unit {
+  display: block;
+  margin-top: 1rem;
+}
+
+.total-time-entry > select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+}
+
 .distance-field > label {
   display: block;
 }
@@ -163,14 +230,16 @@ body {
 }
 
 .distance-inputs input,
-.distance-inputs select {
+.distance-inputs select,
+.total-time-entry > select {
   width: 100%;
   padding: 0.55rem 0.7rem;
 }
 
 .time-part input:focus-visible,
 .distance-inputs input:focus-visible,
-.distance-inputs select:focus-visible {
+.distance-inputs select:focus-visible,
+.total-time-entry > select:focus-visible {
   outline: 3px solid #bf4b31;
   outline-offset: 2px;
 }
