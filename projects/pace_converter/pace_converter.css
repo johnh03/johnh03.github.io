@@ -23,7 +23,7 @@ body {
 
 .app-heading h2,
 .race-heading h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-weight: 400;
 }
 
@@ -267,7 +267,7 @@ body {
 .result-time {
   margin: 0.15rem 0;
   color: var(--color-accent-dark);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: clamp(2.7rem, 6vw, 4.25rem);
   line-height: 1.12;
   font-variant-numeric: tabular-nums;

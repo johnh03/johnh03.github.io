@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800&display=swap");
+
 *, *::after, *::before {
     padding: 0;
     margin: 0;
@@ -7,6 +9,8 @@
     --dark-color: #000;
 }
 body {
+    font-family: "Maven Pro", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 500;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -979,7 +983,7 @@ body {
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.84);
     color: #20332d;
-    font: 600 0.9rem/1.2 system-ui, sans-serif;
+    font: 600 0.9rem/1.2 "Maven Pro", ui-sans-serif, system-ui, sans-serif;
     text-decoration: none;
     backdrop-filter: blur(8px);
 }
