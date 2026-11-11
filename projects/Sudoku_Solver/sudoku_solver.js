@@ -5,6 +5,7 @@ window.onload = function() {
         const input = document.createElement("input");
         input.type = "text";
         input.maxLength = 1;
+        input.setAttribute("aria-label", `Row ${Math.floor(i / 9) + 1}, column ${(i % 9) + 1}`);
         input.oninput = () => {
             // Ensure only digits 1-9 are accepted
             input.value = input.value.replace(/[^1-9]/g, '');

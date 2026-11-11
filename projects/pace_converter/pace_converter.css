@@ -1,6 +1,6 @@
 body {
-  background: #f3f4ef;
-  color: #1e2925;
+  background: var(--color-paper);
+  color: var(--color-ink);
 }
 
 .pace-app {
@@ -14,7 +14,7 @@ body {
 }
 
 .eyebrow {
-  color: #bf4b31;
+  color: #bd7958;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -35,7 +35,7 @@ body {
 
 .app-heading > p:last-child,
 .race-heading > p {
-  color: #65736c;
+  color: var(--color-muted);
 }
 
 .converter-layout {
@@ -48,7 +48,7 @@ body {
 .result-panel {
   min-width: 0;
   padding: clamp(1.2rem, 3vw, 2rem);
-  border: 1px solid #d8ddd5;
+  border: 1px solid var(--color-line);
   border-radius: 7px;
 }
 
@@ -98,21 +98,21 @@ body {
 .mode-toggle span {
   display: block;
   padding: 0.6rem 0.7rem;
-  border: 1px solid #d8ddd5;
+  border: 1px solid var(--color-line);
   border-radius: 5px;
-  color: #52615a;
+  color: var(--color-muted);
   font-size: 0.9rem;
   font-weight: 700;
 }
 
 .mode-toggle input:checked + span {
-  border-color: #1e2925;
-  background: #1e2925;
+  border-color: var(--color-accent);
+  background: var(--color-accent);
   color: #fff;
 }
 
 .mode-toggle input:focus-visible + span {
-  outline: 3px solid #bf4b31;
+  outline: 3px solid #bd7958;
   outline-offset: 2px;
 }
 
@@ -125,7 +125,7 @@ body {
 .time-part {
   display: grid;
   gap: 0.35rem;
-  color: #65736c;
+  color: var(--color-muted);
   font-size: 0.78rem;
 }
 
@@ -134,10 +134,10 @@ body {
 .distance-inputs select,
 .total-time-entry > select {
   min-height: 48px;
-  border: 1px solid #c9d2ca;
+  border: 1px solid var(--color-line);
   border-radius: 5px;
   background: #fff;
-  color: #1e2925;
+  color: var(--color-ink);
   font: inherit;
   font-size: 1.1rem;
 }
@@ -150,7 +150,7 @@ body {
 
 .time-separator {
   padding-bottom: 0.55rem;
-  color: #1e2925;
+  color: var(--color-ink);
   font-size: 1.4rem;
   font-weight: 700;
 }
@@ -160,9 +160,9 @@ body {
   gap: 0.2rem;
   margin: 0 0 0 0.45rem;
   padding: 0.25rem;
-  border: 1px solid #d8ddd5;
+  border: 1px solid var(--color-line);
   border-radius: 6px;
-  background: #f3f4ef;
+  background: var(--color-paper);
 }
 
 .unit-toggle label {
@@ -181,19 +181,19 @@ body {
   display: block;
   padding: 0.55rem 0.65rem;
   border-radius: 4px;
-  color: #52615a;
+  color: var(--color-muted);
   font-size: 0.9rem;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .unit-toggle input:checked + span {
-  background: #1e2925;
+  background: var(--color-accent);
   color: #fff;
 }
 
 .unit-toggle input:focus-visible + span {
-  outline: 3px solid #bf4b31;
+  outline: 3px solid #bd7958;
   outline-offset: 2px;
 }
 
@@ -240,14 +240,14 @@ body {
 .distance-inputs input:focus-visible,
 .distance-inputs select:focus-visible,
 .total-time-entry > select:focus-visible {
-  outline: 3px solid #bf4b31;
+  outline: 3px solid #bd7958;
   outline-offset: 2px;
 }
 
 .input-message {
   min-height: 1.3rem;
   margin-top: 0.5rem;
-  color: #a33324;
+  color: #a54232;
   font-size: 0.85rem;
 }
 
@@ -255,18 +255,18 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #dce9dd;
+  background: var(--color-accent-soft);
 }
 
 .result-label {
-  color: #4f6455;
+  color: var(--color-muted);
   font-size: 0.87rem;
   font-weight: 700;
 }
 
 .result-time {
   margin: 0.15rem 0;
-  color: #1c4934;
+  color: var(--color-accent-dark);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2.7rem, 6vw, 4.25rem);
   line-height: 1.12;
@@ -274,7 +274,7 @@ body {
 }
 
 .result-distance {
-  color: #52665a;
+  color: var(--color-muted);
 }
 
 .pace-equivalents {
@@ -283,7 +283,7 @@ body {
   gap: 0.75rem;
   margin-top: 1.7rem;
   padding-top: 1rem;
-  border-top: 1px solid #bfd0c1;
+  border-top: 1px solid #c8d5ca;
 }
 
 .pace-equivalents div {
@@ -292,12 +292,12 @@ body {
 }
 
 .pace-equivalents span {
-  color: #52665a;
+  color: var(--color-muted);
   font-size: 0.8rem;
 }
 
 .pace-equivalents strong {
-  color: #1e2925;
+  color: var(--color-ink);
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
 }
@@ -326,7 +326,7 @@ body {
 
 .table-wrap {
   overflow-x: auto;
-  border-top: 2px solid #1e2925;
+  border-top: 2px solid var(--color-ink);
 }
 
 table {
@@ -338,11 +338,11 @@ table {
 th,
 td {
   padding: 0.78rem 0.6rem;
-  border-bottom: 1px solid #d8ddd5;
+  border-bottom: 1px solid var(--color-line);
 }
 
 thead th {
-  color: #65736c;
+  color: var(--color-muted);
   font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -353,7 +353,7 @@ tbody th {
 }
 
 tbody td:last-child {
-  color: #1c4934;
+  color: var(--color-accent-dark);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }

@@ -2,17 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="sudoku_solver.css">
 </head>
 <body>
-    <h1>Sudoku Solver</h1>
-    <div id="sudoku-board"></div>
-    <div class="buttons">
-        <button onclick="solveSudoku()">Solve Puzzle</button>
-        <button onclick="clearBoard()">Clear Board</button>
-    </div>
-    <p id="message"></p>
+    <header>
+        <h1>Sudoku Solver</h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../projects.html" class="active">Projects</a></li>
+                <li><a href="../lab02/huangj24-JohnHuang-resume.html">Resume</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="solver-app" aria-labelledby="solver-title">
+            <h2 id="solver-title">Solve a Sudoku</h2>
+            <p>Enter the known numbers, then solve the puzzle or clear the grid to start over.</p>
+            <div id="sudoku-board"></div>
+            <div class="buttons">
+                <button type="button" onclick="solveSudoku()">Solve Puzzle</button>
+                <button type="button" onclick="clearBoard()">Clear Board</button>
+            </div>
+            <p id="message" role="status" aria-live="polite"></p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 John Huang</p>
+        <div class="social-icons">
+            <a href="https://github.com/johnh03" target="_blank" rel="noopener noreferrer">
+                <img src="../../images/github_logo.png" alt="GitHub">
+            </a>
+            <a href="https://linkedin.com/in/john-huang-rpi0330" target="_blank" rel="noopener noreferrer">
+                <img src="../../images/linkedin_logo.png" alt="LinkedIn">
+            </a>
+        </div>
+    </footer>
     <script src="sudoku_solver.js"></script>
 </body>
 </html>

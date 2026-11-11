@@ -965,3 +965,48 @@ body {
 .not-loaded * {
     animation-play-state: paused !important;
 }
+
+.flower-back-link {
+    position: fixed;
+    z-index: 1000;
+    top: 1rem;
+    left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.6rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid rgba(32, 51, 45, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.84);
+    color: #20332d;
+    font: 600 0.9rem/1.2 system-ui, sans-serif;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+}
+
+.flower-back-link:hover {
+    background: #fff;
+    color: #244b3b;
+}
+
+.flower-back-link:focus-visible {
+    outline: 3px solid #bd7958;
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .flower-back-link {
+        top: 0.75rem;
+        left: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-delay: 0ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
