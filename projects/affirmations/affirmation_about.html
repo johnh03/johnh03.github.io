@@ -21,9 +21,10 @@
       <main>
          <section class="affirmation-app" aria-labelledby="app-title">
             <div class="app-heading">
-               <p class="eyebrow">A little room to breathe</p>
-               <h2 id="app-title">Make space for a kinder thought.</h2>
-               <p>Choose a reminder rhythm, then get back to what matters.</p>
+               <p class="eyebrow">Affirmations · interval timer</p>
+               <!-- Rewrite this heading in your own voice if you want the app to feel more personal. -->
+               <h2 id="app-title">A reminder, now and then.</h2>
+               <p>Choose a list and an interval. The next reminder appears in a pop-up.</p>
             </div>
 
             <div class="app-layout">
@@ -78,8 +79,8 @@
                      <span class="status-dot" id="status-dot"></span>
                      <span id="status-label">Reminders are paused</span>
                   </div>
-                  <h3 id="status-title">A thought for right now</h3>
-                  <blockquote id="preview-affirmation">You are allowed to begin again, as many times as you need.</blockquote>
+                  <h3 id="status-title">Preview</h3>
+                  <blockquote id="preview-affirmation">I can take this one step at a time.</blockquote>
                   <div class="next-reminder" id="next-reminder" aria-live="polite">Start a timer when you are ready.</div>
                   <p class="field-hint">Keep this tab open for timed reminders.</p>
                </section>
@@ -101,12 +102,12 @@
          <form method="dialog" class="dialog-dismiss-form">
             <button class="dialog-close" aria-label="Close affirmation">&times;</button>
          </form>
-         <p class="eyebrow">A moment for you</p>
-         <h2 id="dialog-title">Take a breath.</h2>
+         <p class="eyebrow">Affirmation</p>
+         <h2 id="dialog-title">Your reminder</h2>
          <blockquote id="dialog-affirmation"></blockquote>
          <div class="dialog-actions">
-            <button class="button button-secondary" id="another-button" type="button">Another thought</button>
-            <button class="button button-primary" id="close-dialog-button" type="button">Thank you</button>
+            <button class="button button-secondary" id="another-button" type="button">Another affirmation</button>
+            <button class="button button-primary" id="close-dialog-button" type="button">Close</button>
          </div>
       </dialog>
       <script src="affirmations.js" defer></script>

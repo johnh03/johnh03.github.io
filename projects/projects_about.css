@@ -5,10 +5,9 @@
 .lab-intro > h2,
 .lab-details > h2 {
   margin: 0 0 0.65rem;
-  font-family: inherit;
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  font-weight: 400;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.06em;
 }
 
 .lab-intro > p,
@@ -20,9 +19,10 @@
 
 .lab-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 235px), 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(1.5rem, 5vw, 4rem);
+  margin-top: 2.2rem;
+  counter-reset: project;
 }
 
 .lab-card,
@@ -31,27 +31,30 @@
   flex-direction: column;
   align-items: flex-start;
   min-width: 0;
-  padding: 1.35rem;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  padding: 1.2rem 0 1.4rem;
+  border-top: 1px solid var(--color-ink);
+  background: transparent;
 }
 
 .lab-card {
-  min-height: 205px;
-  transition: border-color 160ms ease, transform 160ms ease;
+  min-height: 175px;
+  counter-increment: project;
 }
 
-.lab-card:hover {
-  transform: translateY(-2px);
-  border-color: #b6c8ba;
+.lab-card::before {
+  content: "0" counter(project);
+  margin-bottom: 0.8rem;
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
 }
 
 .lab-card h3,
 .resource-card h3 {
   margin: 0 0 0.55rem;
-  font-size: 1.08rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
 }
 
 .lab-card p,
@@ -65,13 +68,18 @@
 .resource-card a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.6rem;
+  min-height: 2.4rem;
   margin-top: auto;
-  padding: 0.65rem 0;
+  padding: 0.55rem 0 0.25rem;
   color: var(--color-accent-dark);
   font-size: 0.92rem;
   font-weight: 700;
-  text-decoration-thickness: 1px;
+  text-decoration: none;
+}
+
+.lab-card a:hover,
+.resource-card a:hover {
+  text-decoration: underline;
 }
 
 .lab-details {
@@ -88,11 +96,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   align-items: stretch;
-  gap: 1rem;
+  column-gap: clamp(1.5rem, 5vw, 4rem);
+  margin-top: 2rem;
 }
 
 .resource-card {
-  min-height: 180px;
+  min-height: 150px;
 }
 
 .resource-card a + a {
@@ -101,11 +110,16 @@
 
 @media (max-width: 640px) {
   .lab-grid {
-    margin-top: 1.35rem;
+    grid-template-columns: 1fr;
+    margin-top: 1.5rem;
   }
 
-  .lab-card,
-  .resource-card {
-    padding: 1.15rem;
+  .lab-card {
+    min-height: 150px;
+  }
+
+  .lab-details > h2,
+  .lab-intro > h2 {
+    font-size: clamp(2.2rem, 12vw, 3.2rem);
   }
 }

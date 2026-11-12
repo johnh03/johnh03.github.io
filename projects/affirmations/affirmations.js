@@ -1,16 +1,11 @@
+// Swap these for reminders that sound like something you would actually say.
 const presetAffirmations = [
-  "You are allowed to begin again, as many times as you need.",
-  "You do not have to do everything at once.",
-  "Small steps still move you forward.",
-  "Rest is part of the work, not a reward for finishing it.",
-  "You can meet this moment one breath at a time.",
-  "Your best today can look different from your best yesterday.",
-  "It is okay to pause and find your footing.",
-  "You have handled difficult things before.",
-  "Progress does not need to be perfect to count.",
-  "You deserve the same patience you give to others.",
-  "A slow breath is a small place to start.",
-  "You are more than what you get done today."
+  "I can take this one step at a time.",
+  "It's okay to ask for help.",
+  "Done is good enough for today.",
+  "I can take a short break and come back.",
+  "I don't have to solve everything right now.",
+  "One thing at a time."
 ];
 
 const storageKey = "affirmation-reminder-settings";
